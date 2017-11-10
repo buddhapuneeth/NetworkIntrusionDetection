@@ -12,16 +12,21 @@ df_y = pd.DataFrame(boston.target)
 
 x_train, x_test, y_train, y_test = train_test_split(df_x,df_y,test_size=0.2, random_state=4)
 
-def dimReducByPCA(x_train_data,low_dim, doWhiten):
+def dimReduceByPCA(x_train_data,low_dim, doWhiten):
     pca = PCA(n_components=low_dim, whiten=doWhiten)
     return pca.fit(x_train_data).transform(x_train_data)
+
+def dimReduceBySVD(x_train_data,low_dim):
+    svd = TruncatedSVD(n_components = 10)
+    return svd.fit(df_x).transform(df_x)
 
 def doLinearClassification(x_train_data, y_train_data, x_test_data, y_test_data):
     reg = linear_model.LinearRegression()
     reg.fit(x_train_data,y_train_data)
     print(reg.score(x_test_data,y_test_data))
 
+
 doLinearClassification(x_train,y_train,x_test,y_test)
-x_low_dim = dimReducByPCA(df_x,10,'True')
+x_low_dim = dimReduceByPCA(df_x,10,'True')
 x_train, x_test, y_train, y_test = train_test_split(x_low_dim,df_y,test_size=0.2, random_state=4)
 doLinearClassification(x_train,y_train,x_test,y_test)
