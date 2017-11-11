@@ -25,8 +25,23 @@ def doLinearClassification(x_train_data, y_train_data, x_test_data, y_test_data)
     reg.fit(x_train_data,y_train_data)
     print(reg.score(x_test_data,y_test_data))
 
-
+newDim = 10
+print("plain")
 doLinearClassification(x_train,y_train,x_test,y_test)
-x_low_dim = dimReduceByPCA(df_x,10,'True')
+x_low_dim = dimReduceByPCA(df_x,newDim,'True')
 x_train, x_test, y_train, y_test = train_test_split(x_low_dim,df_y,test_size=0.2, random_state=4)
+print("PCA 10")
 doLinearClassification(x_train,y_train,x_test,y_test)
+
+print("SVD 10")
+x_low_dim_svd = dimReduceBySVD(df_x,newDim)
+x_train, x_test, y_train, y_test = train_test_split(x_low_dim_svd,df_y,test_size=0.2, random_state=4)
+doLinearClassification(x_train,y_train,x_test,y_test)
+
+print(df_x.shape)
+print(df_x.corr())
+df_low_pca = pd.DataFrame(x_low_dim)
+print(df_low_pca.shape)
+print(df_low_pca.corr())
+# print(x_low_dim.shape)
+# print(x_low_dim.corr())
