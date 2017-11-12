@@ -17,7 +17,7 @@ def dimReduceByPCA(x_train_data,low_dim, doWhiten):
     return pca.fit(x_train_data).transform(x_train_data)
 
 def dimReduceBySVD(x_train_data,low_dim):
-    svd = TruncatedSVD(n_components = 10)
+    svd = TruncatedSVD(n_components = low_dim)
     return svd.fit(df_x).transform(df_x)
 
 def doLinearClassification(x_train_data, y_train_data, x_test_data, y_test_data):
@@ -25,7 +25,7 @@ def doLinearClassification(x_train_data, y_train_data, x_test_data, y_test_data)
     reg.fit(x_train_data,y_train_data)
     print(reg.score(x_test_data,y_test_data))
 
-newDim = 10
+newDim = 2
 print("plain")
 doLinearClassification(x_train,y_train,x_test,y_test)
 x_low_dim = dimReduceByPCA(df_x,newDim,'True')
@@ -39,9 +39,12 @@ x_train, x_test, y_train, y_test = train_test_split(x_low_dim_svd,df_y,test_size
 doLinearClassification(x_train,y_train,x_test,y_test)
 
 print(df_x.shape)
-print(df_x.corr())
+#print(df_x.corr())
 df_low_pca = pd.DataFrame(x_low_dim)
 print(df_low_pca.shape)
-print(df_low_pca.corr())
+print(df_low_pca.head())
+#print(df_low_pca.corr())
 # print(x_low_dim.shape)
 # print(x_low_dim.corr())
+
+print(np.unique(y_test))
